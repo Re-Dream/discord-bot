@@ -20,7 +20,7 @@ class Nsfw:
         self.nsfw_channel = load_settings()['nsfwchannel']
         self.colourRed = 0xff0000
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True,aliases=['e6'])
     async def e621(self, ctx, *tags: str):
         '''Get random e621 image with given tags.
         Usage: e621 "tags"
@@ -50,7 +50,7 @@ class Nsfw:
         except Exception as e:
             await self.bot.say(embed=discord.Embed(title=self.err_title, description=str(e), colour=self.colourRed))
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True,aliases=['db'])
     async def danbooru(self, ctx, *tags: str):
         '''Get random danbooru image with given tags.
         Usage: danbooru "tags"
@@ -64,7 +64,7 @@ class Nsfw:
                 "http://danbooru.donmai.us/post/index.json?tags={0}".format(tags)).json()
             random_image = random.choice(response)
             if ctx.message.channel == nsfw_channel:
-                em = discord.Embed(description='**Score:** {1} \n **Direct link:** http://danbooru.donmai.us{2}'.format(random_image["score"], random_image["file_url"]),
+                em = discord.Embed(description='**Score:** {0} \n **Direct link:** http://danbooru.donmai.us{1}'.format(random_image["score"], random_image["file_url"]),
                                    colour=0x66FF66)
             else:
                 em = discord.Embed(description='Here is your image {0} \n **Score:** {1} \n **Direct link:** http://danbooru.donmai.us{2}'.format(ctx.message.author.mention, random_image["score"], random_image["file_url"]),
@@ -80,7 +80,7 @@ class Nsfw:
         except Exception as e:
             await self.bot.say(embed=discord.Embed(title=self.err_title, description=str(e), colour=self.colourRed))
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True,aliases=['r34'])
     async def rule34(self, ctx, *tags: str):
         '''Get random rule34 image with given tags.
         Usage: rule34 "tags"

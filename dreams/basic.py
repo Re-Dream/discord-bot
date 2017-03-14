@@ -64,7 +64,7 @@ class Basic:
                 await asyncio.sleep(2)
                 role = discord.utils.find(lambda r: r.name.startswith(str(ctx.message.author)), list(ctx.message.server.roles))
                 await self.bot.add_roles(ctx.message.author, role)
-                await self.bot.say(embed=em) 
+                await self.bot.send_message(bot_channel, embed=em) 
         except Exception as e:
             await self.bot.say(embed=discord.Embed(title=self.err_title, description=str(e), colour=self.colourRed))
 
