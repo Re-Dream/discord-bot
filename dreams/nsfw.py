@@ -64,10 +64,10 @@ class Nsfw:
                 "http://danbooru.donmai.us/post/index.json?tags={0}".format(tags)).json()
             random_image = random.choice(response)
             if ctx.message.channel == nsfw_channel:
-                em = discord.Embed(description='**Artist:** {0} \n **Score:** {1} \n **Direct link:** http://danbooru.donmai.us{2}'.format(random_image["artist"], random_image["score"], random_image["file_url"]),
+                em = discord.Embed(description='**Score:** {1} \n **Direct link:** http://danbooru.donmai.us{2}'.format(random_image["score"], random_image["file_url"]),
                                    colour=0x66FF66)
             else:
-                em = discord.Embed(description='Here is your image {0} \n **Artist:** {1} \n **Score:** {2} \n **Direct link:** http://danbooru.donmai.us{3}'.format(ctx.message.author.mention, random_image["author"], random_image["score"], random_image["file_url"]),
+                em = discord.Embed(description='Here is your image {0} \n **Score:** {1} \n **Direct link:** http://danbooru.donmai.us{2}'.format(ctx.message.author.mention, random_image["score"], random_image["file_url"]),
                                    colour=0x66FF66)
             em.set_image(url="http://danbooru.donmai.us{0}".format(random_image["file_url"]))
             em.set_author(name="Danbooru: {0}".format(tags), icon_url="http://ai-i1.infcdn.net/icons_siandroid/jpg/300/4687/4687752.jpg")
