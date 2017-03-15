@@ -59,8 +59,8 @@ class ImageProcessing:
 
     @commands.command()
     async def e(self, e: discord.Emoji):
-        '''E.
-        e: e "e"
+        '''Enlage emote.
+        Usage: e :emote:
         '''
         img = Image.open(BytesIO(requests.get(e.url).content)).convert("RGBA")
         final = BytesIO()

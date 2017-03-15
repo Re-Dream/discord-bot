@@ -32,6 +32,17 @@ class Fun:
         answer = requests.get("https://api.rtainc.co/twitch/random?format=I+choose...+%5B0%5D&choices={0}".format(choices)).text
         await self.bot.say("{0} {1}".format(ctx.message.author.mention, answer))
 
+    @commands.command(pass_context=True, aliases=['tr'])
+    async def translate(self, ctx, tl, *words: str):
+        '''Translate something.
+        Usage: translate from-to text_to_translate
+        Example: translate en-pl sandwich
+        '''
+        words = ' '.join(words)
+        answer = requests.get("https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170315T092303Z.ece41a1716ebea56.a289d8de3dc45f8ed21e3be5b2ab96e378f684fa&text={0}&lang={1}".format(words,tl)).json()
+        print(answer)
+        await self.bot.say("{0} {1}".format(ctx.message.author.mention, str(answer["text"])[2:-2]))
+
     @commands.command(pass_context=True)
     async def xkcd(self, ctx):
         '''Get random xkcd image.
