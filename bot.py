@@ -27,6 +27,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+    await asyncio.sleep(3)
     while True:
         random_lines = random.choice(open("status.txt").readlines())
         await bot.change_presence(game=discord.Game(name=random_lines))

@@ -1,6 +1,7 @@
 import discord
 import requests
 import random
+import re
 from discord.ext import commands
 
 from utils import checks
@@ -56,6 +57,18 @@ class Fun:
             await self.bot.say("{0}".format(image))
         except Exception as e:
             await self.bot.say(embed=discord.Embed(title=self.err_title, description=str(e), colour=self.colourRed))
+                
+    #this is in fun because people will mostly meme with it
+    @commands.command(pass_context=True,aliases=['s'])
+    async def sed(self, ctx, old, new):
+        '''Replace text in previous messages
+        Usage: s text_to_replace new_text
+        '''
+        async for msg in self.bot.logs_from(ctx.message.channel, before=ctx.message, limit=20):
+            if str(old) in str(msg.content):
+                print(msg.content)
+                await self.bot.say("{0} thinks {1} meant to say: *{2}*".format(ctx.message.author.mention, msg.author.mention, re.sub(old, new, msg.content)))
+                break
 
 def setup(bot):
     bot.add_cog(Fun(bot))
