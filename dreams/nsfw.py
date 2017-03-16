@@ -114,5 +114,39 @@ class Nsfw:
         except Exception as e:
             await self.bot.say(embed=discord.Embed(title=self.err_title, description=str(e), colour=self.colourRed))
 
+    @commands.command(pass_context=True,aliases=['gb'])
+    async def gelbooru(self, ctx, *tags: str):
+        '''Get random gelbooru image with given tags.
+        Usage: gelbooru "tags"
+        '''
+        try:
+            tags = ' '.join(tags)
+            nsfw_channel = discord.utils.find(lambda r: r.name.startswith(self.nsfw_channel),
+                                              list(ctx.message.server.channels))
+            self.bot.send_typing(nsfw_channel)
+            response = requests.get(
+                "http://gelbooru.com/?page=dapi&s=post&q=index&tags={0}".format(tags))
+            root = ElementTree.fromstring(response.content)
+            random_post_number = random.randint(1, len(root.getchildren()))
+            random_post = root[random_post_number]
+            img_link = random_post.attrib["file_url"]
+
+            if ctx.message.channel == nsfw_channel:
+                em = discord.Embed(description='**Score:** {0} \n **Direct link:** http:{1}'.format(random_post.attrib["score"], img_link),
+                                   colour=0x66FF66)
+            else:
+                em = discord.Embed(description='Here is your image {0} \n **Score:** {1} \n **Direct link:** http:{2}'.format(ctx.message.author.mention, random_post.attrib["score"], img_link),
+                                   colour=0x66FF66)
+            em.set_image(url="http:{0}".format(img_link))
+            em.set_author(name="Gelbooru: {0}".format(tags), icon_url="http://ai-i1.infcdn.net/icons_siandroid/jpg/300/4687/4687752.jpg")
+            #img = Image.open(BytesIO(requests.get("http:{0}".format(img_link)).content)).convert("RGBA")
+            #final = BytesIO()
+            #img.save(final, 'png')
+            #final.seek(0)
+            #await self.bot.send_file(nsfw_channel, final, filename="rule34.png")
+            await self.bot.send_message(nsfw_channel, embed=em)
+        except Exception as e:
+            await self.bot.say(embed=discord.Embed(title=self.err_title, description=str(e), colour=self.colourRed))
+
 def setup(bot):
     bot.add_cog(Nsfw(bot))
