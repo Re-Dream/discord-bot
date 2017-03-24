@@ -9,15 +9,15 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 from utils.config import load_settings
 
-async def get_img(self, ctx, *args):
+async def get_img(self, ctx, number, *args):
     try:
-        response = requests.get(args[0])
-        link = args[0]
+        response = requests.get(args[number-1])
+        link = args[number-1]
         print("found link")
     except (IndexError, requests.exceptions.RequestException):
         try:
-            if ctx.message.mentions[0]:
-                user = ctx.message.mentions[0]
+            if ctx.message.mentions[number-1]:
+                user = ctx.message.mentions[number-1]
                 avatar = 'https://discordapp.com/api/users/{0.id}/avatars/{0.avatar}.jpg'.format(
                     user)
                 response = requests.get(avatar)
@@ -25,9 +25,9 @@ async def get_img(self, ctx, *args):
                 print("found mention")
         except IndexError:
             try:
-                if discord.utils.find(lambda r: r.name.startswith(str(args[0])), list(ctx.message.server.members)):
+                if discord.utils.find(lambda r: r.name.startswith(str(args[number-1])), list(ctx.message.server.members)):
                     user = discord.utils.find(lambda r: r.name.startswith(
-                        str(args[0])), list(ctx.message.server.members))
+                        str(args[number-1])), list(ctx.message.server.members))
                     avatar = 'https://discordapp.com/api/users/{0.id}/avatars/{0.avatar}.jpg'.format(
                         user)
                     response = requests.get(avatar)
@@ -40,11 +40,11 @@ async def get_img(self, ctx, *args):
                 async for msg in self.bot.logs_from(ctx.message.channel, before=ctx.message, limit=10):
                     response = None
                     if msg.attachments:
-                        img_urls.append(msg.attachments[0]['url'])
+                        img_urls.append(msg.attachments[number-1]['url'])
                     elif msg.embeds:
-                        if 'url' in msg.embeds[0]:
-                            img_urls.append(msg.embeds[0]['url'])
-                response = requests.get(img_urls[0])
+                        if 'url' in msg.embeds[number-1]:
+                            img_urls.append(msg.embeds[number-1]['url'])
+                response = requests.get(img_urls[number-1])
                 link = img_urls[0]
                 print("found image")
     return link
@@ -74,7 +74,7 @@ class ImageProcessing:
         Usage: caption @user|image text
         '''
         cmd = "caption"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             text = ' '.join(args)
             if len(ctx.message.mentions):
@@ -101,7 +101,7 @@ class ImageProcessing:
         Usage: wall @user|image
         '''
         cmd = "wall"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             try:
                 spacing = int(args[-1])
@@ -124,7 +124,7 @@ class ImageProcessing:
         Usage: dots @user|image
         '''
         cmd = "dots"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             out = BytesIO()
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
@@ -144,7 +144,7 @@ class ImageProcessing:
         Usage: grid @user|image spacing
         '''
         cmd = "grid"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             try:
                 spacing = int(args[-1])
@@ -182,7 +182,7 @@ class ImageProcessing:
         Usage: sharpen @user|image (iterations)
         '''
         cmd = "sharpen"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
@@ -205,7 +205,7 @@ class ImageProcessing:
         Usage: blur @user|image (iterations)
         '''
         cmd = "blur"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
@@ -228,7 +228,7 @@ class ImageProcessing:
         Usage: contour @user|image (iterations)
         '''
         cmd = "contour"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
@@ -251,7 +251,7 @@ class ImageProcessing:
         Usage: detail @user|image (iterations)
         '''
         cmd = "detail"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
@@ -274,7 +274,7 @@ class ImageProcessing:
         Usage: edge @user|image (iterations)
         '''
         cmd = "edge"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
@@ -297,7 +297,7 @@ class ImageProcessing:
         Usage: smooth @user|image (iterations)
         '''
         cmd = "smooth"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
@@ -320,7 +320,7 @@ class ImageProcessing:
         Usage: emboss @user|image (iterations)
         '''
         cmd = "emboss"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
@@ -344,7 +344,7 @@ class ImageProcessing:
         Filtering is optional.
         '''
         cmd = "resize"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
@@ -369,7 +369,7 @@ class ImageProcessing:
         Usage: rotate @user|image angle
         '''
         cmd = "rotate"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
@@ -389,7 +389,7 @@ class ImageProcessing:
         Usage: flip @user|image
         '''
         cmd = "flip"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             img = img.transpose(Image.FLIP_LEFT_RIGHT)
@@ -406,7 +406,7 @@ class ImageProcessing:
         Usage: flop @user|image
         '''
         cmd = "flop"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             img = img.transpose(Image.FLIP_TOP_BOTTOM)
@@ -423,7 +423,7 @@ class ImageProcessing:
         Usage: meme @user|image top_line|bottom_line
         '''
         cmd = "meme"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             text = ' '.join(args)
             if len(ctx.message.mentions):
@@ -451,7 +451,7 @@ class ImageProcessing:
         Usage: mlr @user|image
         '''
         cmd = "mlr"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             img2 = img.transpose(Image.FLIP_LEFT_RIGHT)
@@ -475,7 +475,7 @@ class ImageProcessing:
         Usage: mrl @user|image
         '''
         cmd = "mrl"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             img2 = img.transpose(Image.FLIP_LEFT_RIGHT)
@@ -499,7 +499,7 @@ class ImageProcessing:
         Usage: mtb @user|image
         '''
         cmd = "mtb"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             img2 = img.transpose(Image.FLIP_TOP_BOTTOM)
@@ -523,7 +523,7 @@ class ImageProcessing:
         Usage: mbt @user|image
         '''
         cmd = "mbt"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             img2 = img.transpose(Image.FLIP_TOP_BOTTOM)
@@ -547,7 +547,7 @@ class ImageProcessing:
         Usage: mbltr @user|image
         '''
         cmd = "mbltr"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             img2 = img.transpose(Image.FLIP_LEFT_RIGHT).rotate(90)
@@ -574,7 +574,7 @@ class ImageProcessing:
         Usage: mtrbl @user|image
         '''
         cmd = "mtrbl"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             img2 = img.transpose(Image.FLIP_LEFT_RIGHT).rotate(90)
@@ -601,7 +601,7 @@ class ImageProcessing:
         Usage: mtlbr @user|image
         '''
         cmd = "mtlbr"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             img2 = img.transpose(Image.FLIP_LEFT_RIGHT).rotate(-90)
@@ -628,7 +628,7 @@ class ImageProcessing:
         Usage: mbrtl @user|image
         '''
         cmd = "mbrtl"
-        link = await get_img(self, ctx, *args)
+        link = await get_img(self, ctx, 1, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             img2 = img.transpose(Image.FLIP_LEFT_RIGHT).rotate(-90)
@@ -646,6 +646,45 @@ class ImageProcessing:
                 await self.bot.upload(final, filename='{0}.png'.format(cmd))
             else:
                 await self.bot.say(embed=discord.Embed(title=self.err_title, description="This command only works with square images. Try resize command first.", colour=self.colourRed))
+        except Exception as e:
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
+
+    @commands.command(pass_context=True,aliases=['hearts','gay'])
+    async def lovers(self, ctx, *args):
+        '''They know they love each other.
+        Usage: lovers @user1 @user2
+        '''
+        cmd = "lovers"
+        link = await get_img(self, ctx, 1, *args)
+        link2 = await get_img(self, ctx, 2, *args)
+        try:
+            img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
+            img2 = Image.open(BytesIO(requests.get(link2).content)).convert("RGBA")
+            comp = Image.new('RGBA',(256,128))
+            comp2 = Image.new('RGBA',(256,128))
+            comp3 = Image.new('RGBA',(256,128))
+            comp4 = Image.new('RGBA',(256,128))
+            heart = Image.open("heart_shape.png").convert("RGBA")
+            mask = Image.open("heart_shape_mask.png").convert('L')
+
+            img_heart = Image.composite(img, heart, mask).resize((110,110),Image.LANCZOS)
+            img2_heart = Image.composite(img2, heart, mask).resize((110,110),Image.LANCZOS)
+
+            comp.paste(heart, (0,0))
+            comp2.paste(heart, (100,0))
+            ff = Image.alpha_composite(comp, comp2)
+
+            comp3.paste(img_heart, (9,9))
+            comp4.paste(img2_heart, (109,9))
+            ff2 = Image.alpha_composite(comp3, comp4)
+
+            ff3 = Image.alpha_composite(ff, ff2)
+
+            final = BytesIO()
+            ff3.save(final, "png")
+            final.seek(0)
+
+            await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
             await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
