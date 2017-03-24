@@ -93,7 +93,7 @@ class ImageProcessing:
                 proc.communicate(out.read())
                 await self.bot.upload("img.jpg")
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def wall(self, ctx, *args):
@@ -116,7 +116,7 @@ class ImageProcessing:
             proc.communicate(out.read())
             await self.bot.upload("img.png")
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def dots(self, ctx, *args):
@@ -136,7 +136,7 @@ class ImageProcessing:
             proc.communicate(out.read())
             await self.bot.upload("img2.png")
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def grid(self, ctx, *args):
@@ -160,7 +160,7 @@ class ImageProcessing:
             proc.communicate(out.read())
             await self.bot.upload("img.png")
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def avatar(self, ctx):
@@ -186,9 +186,9 @@ class ImageProcessing:
         link = await get_img(self, ctx, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
-            if int(args[-1]) > 10:
-                args[-1] = 10
             try:
+                if int(args[-1]) > 10:
+                    args[-1] = 10
                 for x in range(1, int(args[-1])):
                     img = img.filter(ImageFilter.SHARPEN)
             except (ValueError, IndexError):
@@ -198,7 +198,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def blur(self, ctx, *args):
@@ -209,9 +209,9 @@ class ImageProcessing:
         link = await get_img(self, ctx, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
-            if int(args[-1]) > 10:
-                args[-1] = 10
             try:
+                if int(args[-1]) > 10:
+                    args[-1] = 10
                 for x in range(1, int(args[-1])):
                     img = img.filter(ImageFilter.BLUR)
             except (ValueError, IndexError):
@@ -221,7 +221,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def contour(self, ctx, *args):
@@ -232,9 +232,9 @@ class ImageProcessing:
         link = await get_img(self, ctx, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
-            if int(args[-1]) > 10:
-                args[-1] = 10
             try:
+                if int(args[-1]) > 10:
+                    args[-1] = 10
                 for x in range(1, int(args[-1])):
                     img = img.filter(ImageFilter.CONTOUR)
             except (ValueError, IndexError):
@@ -244,7 +244,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def detail(self, ctx, *args):
@@ -255,9 +255,9 @@ class ImageProcessing:
         link = await get_img(self, ctx, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
-            if int(args[-1]) > 10:
-                args[-1] = 10
             try:
+                if int(args[-1]) > 10:
+                    args[-1] = 10
                 for x in range(1, int(args[-1])):
                     img = img.filter(ImageFilter.DETAIL)
             except (ValueError, IndexError):
@@ -267,7 +267,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def edge(self, ctx, *args):
@@ -278,9 +278,9 @@ class ImageProcessing:
         link = await get_img(self, ctx, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
-            if int(args[-1]) > 10:
-                args[-1] = 10
             try:
+                if int(args[-1]) > 10:
+                    args[-1] = 10
                 for x in range(1, int(args[-1])):
                     img = img.filter(ImageFilter.EDGE_ENHANCE_MORE)
             except (ValueError, IndexError):
@@ -290,7 +290,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def smooth(self, ctx, *args):
@@ -301,9 +301,9 @@ class ImageProcessing:
         link = await get_img(self, ctx, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
-            if int(args[-1]) > 10:
-                args[-1] = 10
             try:
+                if int(args[-1]) > 10:
+                    args[-1] = 10
                 for x in range(1, int(args[-1])):
                     img = img.filter(ImageFilter.SMOOTH)
             except (ValueError, IndexError):
@@ -313,7 +313,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def emboss(self, ctx, *args):
@@ -324,9 +324,9 @@ class ImageProcessing:
         link = await get_img(self, ctx, *args)
         try:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
-            if int(args[-1]) > 10:
-                args[-1] = 10
             try:
+                if int(args[-1]) > 10:
+                    args[-1] = 10
                 for x in range(1, int(args[-1])):
                     img = img.filter(ImageFilter.EMBOSS)
             except (ValueError, IndexError):
@@ -336,7 +336,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def resize(self, ctx, *args):
@@ -362,7 +362,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def rotate(self, ctx, *args):
@@ -382,7 +382,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def flip(self, ctx, *args):
@@ -399,7 +399,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def flop(self, ctx, *args):
@@ -416,7 +416,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def meme(self, ctx, *args):
@@ -444,7 +444,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True, aliases=['haah'])
     async def mlr(self, ctx, *args):
@@ -468,7 +468,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True, aliases=['waaw'])
     async def mrl(self, ctx, *args):
@@ -492,7 +492,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True, aliases=['hooh'])
     async def mtb(self, ctx, *args):
@@ -516,7 +516,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True, aliases=['woow'])
     async def mbt(self, ctx, *args):
@@ -540,7 +540,7 @@ class ImageProcessing:
             final.seek(0)
             await self.bot.upload(final, filename='{0}.png'.format(cmd))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def mbltr(self, ctx, *args):
@@ -567,7 +567,7 @@ class ImageProcessing:
             else:
                 await self.bot.say(embed=discord.Embed(title=self.err_title, description="This command only works with square images. Try resize command first.", colour=self.colourRed))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def mtrbl(self, ctx, *args):
@@ -594,7 +594,7 @@ class ImageProcessing:
             else:
                 await self.bot.say(embed=discord.Embed(title=self.err_title, description="This command only works with square images. Try resize command first.", colour=self.colourRed))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def mtlbr(self, ctx, *args):
@@ -621,7 +621,7 @@ class ImageProcessing:
             else:
                 await self.bot.say(embed=discord.Embed(title=self.err_title, description="This command only works with square images. Try resize command first.", colour=self.colourRed))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def mbrtl(self, ctx, *args):
@@ -648,7 +648,7 @@ class ImageProcessing:
             else:
                 await self.bot.say(embed=discord.Embed(title=self.err_title, description="This command only works with square images. Try resize command first.", colour=self.colourRed))
         except Exception as e:
-            await self.bot.say(embed=discord.Embed(title=err_title,description=str(e),colour=colourRed))
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
 
 def setup(bot):

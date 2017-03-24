@@ -54,6 +54,7 @@ async def on_command_error(e, ctx):
     except Exception as e:
         print(str(e))
 
+
 if __name__ == '__main__':
     token = load_settings()['token']
 
