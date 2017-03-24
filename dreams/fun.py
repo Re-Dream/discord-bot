@@ -76,7 +76,7 @@ class Fun:
             }
         ).text
         if "<title>Application Error</title>" in answer:
-            print("error - yoda is dead")
+            await self.bot.say("**Yoda**: Enough talking for now. Sleep I must.")
         else:
             await self.bot.say("**Yoda-{0}**: {1}".format(ctx.message.author.name, answer))
 
