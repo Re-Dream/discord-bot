@@ -658,8 +658,8 @@ class ImageProcessing:
         link = await get_img(self, ctx, 1, *args)
         link2 = await get_img(self, ctx, 2, *args)
         try:
-            img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
-            img2 = Image.open(BytesIO(requests.get(link2).content)).convert("RGBA")
+            img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA").resize((128,128),Image.LANCZOS)
+            img2 = Image.open(BytesIO(requests.get(link2).content)).convert("RGBA").resize((128,128),Image.LANCZOS)
             comp = Image.new('RGBA',(256,128))
             comp2 = Image.new('RGBA',(256,128))
             comp3 = Image.new('RGBA',(256,128))
