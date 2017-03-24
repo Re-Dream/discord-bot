@@ -109,7 +109,7 @@ class Fun:
         Usage: wc
         '''
         text = ""
-        async for msg in self.bot.logs_from(ctx.message.channel, before=ctx.message, limit=20):
+        async for msg in self.bot.logs_from(ctx.message.channel, before=ctx.message, limit=100):
             text += msg.content
         wordcloud = WordCloud().generate(text)
         final = BytesIO()
