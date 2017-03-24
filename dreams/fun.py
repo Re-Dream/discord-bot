@@ -13,6 +13,7 @@ class Fun:
         self.bot = bot
         self.prefix = load_settings()['prefix']
         self.err_title = load_settings()['error_title']
+        self.mskey = load_settings()['mskey']
         self.colourRed = 0xff0000
 
 
@@ -43,6 +44,20 @@ class Fun:
         answer = requests.get("https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170315T092303Z.ece41a1716ebea56.a289d8de3dc45f8ed21e3be5b2ab96e378f684fa&text={0}&lang={1}".format(words,tl)).json()
         print(answer)
         await self.bot.say("{0} {1}".format(ctx.message.author.mention, str(answer["text"])[2:-2]))
+
+    @commands.command(pass_context=True)
+    async def love(self, ctx, fn, sn):
+        '''Love calculation, were you meant for each other?
+        Usage: love first_person second_person
+        '''
+        answer = requests.get("https://love-calculator.p.mashape.com/getPercentage?fname={0}&sname={1}".format(fn, sn),
+            headers={
+                "X-Mashape-Key": self.mskey,
+                "Accept": "application/json"
+            }
+        ).json()
+        print(answer)
+        await self.bot.say(embed=discord.Embed(title=":heart_exclamation: Love Calculation Result",description="{0} & {1}: **{2}%**, {3}".format(answer["fname"],answer["sname"],answer["percentage"],answer["result"]),colour=self.colourRed))
 
     @commands.command(pass_context=True)
     async def xkcd(self, ctx):

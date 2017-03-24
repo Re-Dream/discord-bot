@@ -171,8 +171,7 @@ class ImageProcessing:
         try:
             if ctx.message.mentions[0]:
                 user = ctx.message.mentions[0]
-                avatar = 'https://discordapp.com/api/users/{0.id}/avatars/{0.avatar}.jpg'.format(
-                    user)
+                avatar = ctx.message.mentions[0].avatar_url
                 await self.bot.say(avatar)
         except IndexError:
             await self.bot.say("No user specified. Please use {0}{1} @username.".format(self.prefix, cmd))
