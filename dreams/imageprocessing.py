@@ -25,9 +25,9 @@ async def get_img(self, ctx, number, *args):
                 print("found mention")
         except IndexError:
             try:
-                if discord.utils.find(lambda r: r.name.startswith(str(args[number-1])), list(ctx.message.server.members)):
-                    user = discord.utils.find(lambda r: r.name.startswith(
-                        str(args[number-1])), list(ctx.message.server.members))
+                if discord.utils.find(lambda r: r.display_name.lower().startswith(str(args[number-1]).lower()), list(ctx.message.server.members)):
+                    user = discord.utils.find(lambda r: r.display_name.lower().startswith(
+                        str(args[number-1]).lower()), list(ctx.message.server.members))
                     avatar = 'https://discordapp.com/api/users/{0.id}/avatars/{0.avatar}.jpg'.format(
                         user)
                     response = requests.get(avatar)
