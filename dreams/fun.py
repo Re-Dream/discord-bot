@@ -2,6 +2,7 @@ import discord
 import requests
 import random
 import re
+import json
 from discord.ext import commands
 from wordcloud import WordCloud
 from PIL import Image
@@ -61,6 +62,17 @@ class Fun:
         ).json()
         print(answer)
         await self.bot.say(embed=discord.Embed(title=":heart_exclamation: Love Calculation Result",description="{0} & {1}: **{2}%**, {3}".format(answer["fname"],answer["sname"],answer["percentage"],answer["result"]),colour=self.colourRed))
+
+    @commands.command(pass_context=True, aliases=['define'])
+    async def urban(self, ctx, *words: str):
+        '''Check something in urban dictionary
+        Usage: define words
+        '''
+        words = ''.join(words)
+        answer = requests.get("http://api.urbandictionary.com/v0/define?term={0}".format(words)).json()
+        if len(answer['list']) == 0:
+            await self.bot.say("No definition found.")
+        await self.bot.say("**{0}**: {1}".format(words, answer['list'][0]['definition']))
 
     @commands.command(pass_context=True)
     async def yoda(self, ctx, *text: str):
