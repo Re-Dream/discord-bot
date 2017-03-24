@@ -3,6 +3,9 @@ import requests
 import random
 import re
 from discord.ext import commands
+from wordcloud import WordCloud
+from PIL import Image
+from io import BytesIO
 
 from utils import checks
 from utils.config import load_settings
@@ -99,6 +102,21 @@ class Fun:
                 print(msg.content)
                 await self.bot.say("{0} thinks {1} meant to say: *{2}*".format(ctx.message.author.mention, msg.author.mention, re.sub(old, new, msg.content)))
                 break
+
+    @commands.command(pass_context=True,aliases=['wc'])
+    async def wordcloud(self, ctx):
+        '''Create a word cloud
+        Usage: wc
+        '''
+        text = ""
+        async for msg in self.bot.logs_from(ctx.message.channel, before=ctx.message, limit=20):
+            text += msg.content
+        wordcloud = WordCloud().generate(text)
+        final = BytesIO()
+        wc = wordcloud.to_image()
+        wc.save(final, "png")
+        final.seek(0)
+        await self.bot.upload(final, filename="wc.png")
 
 def setup(bot):
     bot.add_cog(Fun(bot))
