@@ -62,20 +62,23 @@ class Fun:
         print(answer)
         await self.bot.say(embed=discord.Embed(title=":heart_exclamation: Love Calculation Result",description="{0} & {1}: **{2}%**, {3}".format(answer["fname"],answer["sname"],answer["percentage"],answer["result"]),colour=self.colourRed))
 
-    #@commands.command(pass_context=True)
-    #async def yoda(self, ctx, *text: str):
-    #    '''Speak like yoda.
-    #    Usage: love text
-    #    '''
-    #    await self.bot.send_typing(ctx.message.channel)
-    #    text = '+'.join(text)
-    #    answer = requests.get("https://yoda.p.mashape.com/yoda?sentence={0}".format(text),
-    #        headers={
-    #            "X-Mashape-Key": self.mskey,
-    #            "Accept": "text/plain"
-    #        }
-    #    ).text
-    #    await self.bot.say("**Yoda-{0}**: {1}".format(ctx.message.author.name, answer))
+    @commands.command(pass_context=True)
+    async def yoda(self, ctx, *text: str):
+        '''Speak like yoda.
+        Usage: love text
+        '''
+        await self.bot.send_typing(ctx.message.channel)
+        text = '+'.join(text)
+        answer = requests.get("https://yoda.p.mashape.com/yoda?sentence={0}".format(text),
+            headers={
+                "X-Mashape-Key": self.mskey,
+                "Accept": "text/plain"
+            }
+        ).text
+        if "<title>Application Error</title>" in answer:
+            print("error - yoda is dead")
+        else:
+            await self.bot.say("**Yoda-{0}**: {1}".format(ctx.message.author.name, answer))
 
     @commands.command(pass_context=True)
     async def xkcd(self, ctx):
