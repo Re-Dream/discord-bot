@@ -187,8 +187,10 @@ class ImageProcessing:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
                 if int(args[-1]) > 10:
-                    args[-1] = 10
-                for x in range(1, int(args[-1])):
+                    iterations = 10
+                else:
+                    interations = int(args[-1])
+                for x in range(1, int(iterations)):
                     img = img.filter(ImageFilter.SHARPEN)
             except (ValueError, IndexError):
                 img = img.filter(ImageFilter.SHARPEN)
@@ -210,8 +212,10 @@ class ImageProcessing:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
                 if int(args[-1]) > 10:
-                    args[-1] = 10
-                for x in range(1, int(args[-1])):
+                    iterations = 10
+                else:
+                    interations = int(args[-1])
+                for x in range(1, int(iterations)):
                     img = img.filter(ImageFilter.BLUR)
             except (ValueError, IndexError):
                 img = img.filter(ImageFilter.BLUR)
@@ -233,8 +237,10 @@ class ImageProcessing:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
                 if int(args[-1]) > 10:
-                    args[-1] = 10
-                for x in range(1, int(args[-1])):
+                    iterations = 10
+                else:
+                    interations = int(args[-1])
+                for x in range(1, int(iterations)):
                     img = img.filter(ImageFilter.CONTOUR)
             except (ValueError, IndexError):
                 img = img.filter(ImageFilter.CONTOUR)
@@ -256,8 +262,10 @@ class ImageProcessing:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
                 if int(args[-1]) > 10:
-                    args[-1] = 10
-                for x in range(1, int(args[-1])):
+                    iterations = 10
+                else:
+                    interations = int(args[-1])
+                for x in range(1, int(iterations)):
                     img = img.filter(ImageFilter.DETAIL)
             except (ValueError, IndexError):
                 img = img.filter(ImageFilter.DETAIL)
@@ -279,8 +287,10 @@ class ImageProcessing:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
                 if int(args[-1]) > 10:
-                    args[-1] = 10
-                for x in range(1, int(args[-1])):
+                    iterations = 10
+                else:
+                    interations = int(args[-1])
+                for x in range(1, int(iterations)):
                     img = img.filter(ImageFilter.EDGE_ENHANCE_MORE)
             except (ValueError, IndexError):
                 img = img.filter(ImageFilter.EDGE_ENHANCE_MORE)
@@ -302,8 +312,10 @@ class ImageProcessing:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
                 if int(args[-1]) > 10:
-                    args[-1] = 10
-                for x in range(1, int(args[-1])):
+                    iterations = 10
+                else:
+                    interations = int(args[-1])
+                for x in range(1, int(iterations)):
                     img = img.filter(ImageFilter.SMOOTH)
             except (ValueError, IndexError):
                 img = img.filter(ImageFilter.SMOOTH)
@@ -325,8 +337,10 @@ class ImageProcessing:
             img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
             try:
                 if int(args[-1]) > 10:
-                    args[-1] = 10
-                for x in range(1, int(args[-1])):
+                    iterations = 10
+                else:
+                    interations = int(args[-1])
+                for x in range(1, int(iterations)):
                     img = img.filter(ImageFilter.EMBOSS)
             except (ValueError, IndexError):
                 img = img.filter(ImageFilter.EMBOSS)
@@ -363,7 +377,7 @@ class ImageProcessing:
         except Exception as e:
             await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True,aliases=["cas"])
     async def car(self, ctx, *args):
         '''Content aware resize.
         Usage: car @user|image

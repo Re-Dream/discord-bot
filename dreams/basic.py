@@ -83,15 +83,8 @@ detail    Enhance details.
 lovers    They know they love each other.
 emboss    Emboss contours.```'''))
         await self.bot.send_message(ctx.message.author,embed=discord.Embed(title="Music Commands:",description='''```
-pause     Pauses the currently played song.
 stop      Stops playing audio and leaves the voice channel.
-summon    Summons the bot to join your voice channel.
-skip      Vote to skip a song. The song requester can automatically skip.
-playing   Shows info about the currently played song.
-volume    Sets the volume of the currently playing song.
-play      Plays a song.
-join      Joins a voice channel.
-resume    Resumes the currently played song.```'''))
+play      Plays a song.```'''))
         await self.bot.send_message(ctx.message.author,embed=discord.Embed(title="NSFW Commands:",description='''```
 rule34    Get random rule34 image with given tags.
 danbooru  Get random danbooru image with given tags.
