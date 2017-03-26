@@ -62,7 +62,7 @@ class Fun:
         ).json()
         print(answer)
         await self.bot.say(embed=discord.Embed(title=":heart_exclamation: Love Calculation Result",description="{0} & {1}: **{2}%**, {3}".format(answer["fname"],answer["sname"],answer["percentage"],answer["result"]),colour=self.colourRed))
-
+    
     @commands.command(pass_context=True, aliases=['define'])
     async def urban(self, ctx, *words: str):
         '''Check something in urban dictionary
@@ -77,7 +77,7 @@ class Fun:
     @commands.command(pass_context=True)
     async def yoda(self, ctx, *text: str):
         '''Speak like yoda.
-        Usage: love text
+        Usage: yoda text
         '''
         await self.bot.send_typing(ctx.message.channel)
         text = '+'.join(text)
@@ -132,6 +132,22 @@ class Fun:
         wc.save(final, "png")
         final.seek(0)
         await self.bot.upload(final, filename="wc.png")
+
+    @commands.command(pass_context=True)
+    async def drama(self, ctx):
+        '''Check the drama level.
+        Usage: drama
+        '''
+        with open('drama.json') as drama:
+            d = json.load(drama)
+            print(d["keywords"])
+
+        drama_count = 0
+        async for msg in self.bot.logs_from(ctx.message.channel, before=ctx.message, limit=500):
+            if any(key in msg.content for key in d["keywords"]):
+                drama_count += 1
+        print(drama_count)
+        await self.bot.say("Drama factor in *{0}*: **{1}%**".format(ctx.message.channel, int(drama_count)*100/500))
 
 def setup(bot):
     bot.add_cog(Fun(bot))

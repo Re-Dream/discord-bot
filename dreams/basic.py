@@ -32,19 +32,86 @@ class Basic:
         em = discord.Embed(description='Changing status to: {}'.format(status), colour=0x66FF66)
         await self.bot.say(embed=em)
 
+    @commands.command(pass_context=True)
+    async def help(self, ctx):
+        '''Change bot status.
+        Usage: status "text here"
+        '''
+        
+        await self.bot.send_message(ctx.message.author,embed=discord.Embed(title="Basic Commands:",description='''```
+prf       Change bot prefix.
+colour    Change your colour.
+status    Change bot status.```'''))
+        await self.bot.send_message(ctx.message.author,embed=discord.Embed(title="Fun Commands:",description='''```
+sed       Replace text in previous messages
+ball8     Ask a question.
+drama     Check the drama level.
+wordcloud Create a word cloud
+xkcd      Get random xkcd image.
+yoda      Speak like yoda.
+decide    Let the bot decide for you.
+love      Love calculation, were you meant for each other?
+urban     Check something in urban dictionary
+translate Translate something.```'''))
+        await self.bot.send_message(ctx.message.author,embed=discord.Embed(title="Image Processing Commands:",description='''```
+wall      WE NEED TO BUILD A WALL.
+blur      Blur image.
+resize    Resize image.
+car       Content aware resize.
+avatar    Displays avatar of a given user.
+caption   Caption image
+edge      Enhance edges.
+mtrbl     Mirror top-right to bottom-left.
+meme      Make a meme
+sharpen   Sharpen image.
+dots      Change image into dots.
+rotate    Rotate image.
+mbt       Mirror bottom to top.
+flop      Flip top bottom
+mbrtl     Mirror bottom-right to top-left.
+mrl       Mirror right to left.
+flip      Flip left right
+smooth    Smoothen image.
+mbltr     Mirror bottom-left to top-right.
+contour   Enhance contours.
+e         Enlage emote.
+mtlbr     Mirror top-left to bottom-right.
+mlr       Mirror left to right.
+grid      Change image into grid.
+mtb       Mirror top to bottom.
+detail    Enhance details.
+lovers    They know they love each other.
+emboss    Emboss contours.```'''))
+        await self.bot.send_message(ctx.message.author,embed=discord.Embed(title="Music Commands:",description='''```
+pause     Pauses the currently played song.
+stop      Stops playing audio and leaves the voice channel.
+summon    Summons the bot to join your voice channel.
+skip      Vote to skip a song. The song requester can automatically skip.
+playing   Shows info about the currently played song.
+volume    Sets the volume of the currently playing song.
+play      Plays a song.
+join      Joins a voice channel.
+resume    Resumes the currently played song.```'''))
+        await self.bot.send_message(ctx.message.author,embed=discord.Embed(title="NSFW Commands:",description='''```
+rule34    Get random rule34 image with given tags.
+danbooru  Get random danbooru image with given tags.
+e621      Get random e621 image with given tags.
+gelbooru  Get random gelbooru image with given tags.```'''))
+
+
     @commands.command(pass_context=True,aliases=['color'])
     async def colour(self, ctx, colour:discord.Colour):
         '''Change your colour.
         Usage: colour hex_value
         '''
         try:
-            bot_channel = discord.utils.find(lambda r: r.name.startswith("botspam"), list(ctx.message.server.channels))
+            bot_channel = discord.utils.find(lambda r: r.name.startswith(self.bot_channel), list(ctx.message.server.channels))
             r = colour.r/255
             g = colour.g/255
             b = colour.b/255
             c = Color(rgb=(r, g, b))
-            if c.luminance < 0.55:
-                c.luminance = 0.55
+            if c.luminance < 0.45:
+                c.luminance = 0.45
             if c.saturation > 0.80:
                 c.saturation = 0.80
             colour_new = discord.Colour(int(c.hex[1:], 16))

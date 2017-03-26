@@ -364,6 +364,32 @@ class ImageProcessing:
             await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
 
     @commands.command(pass_context=True)
+    async def car(self, ctx, *args):
+        '''Content aware resize.
+        Usage: car @user|image
+        '''
+        cmd = "car"
+        link = await get_img(self, ctx, 1, *args)
+        try:
+            img = Image.open(BytesIO(requests.get(link).content)).convert("RGBA")
+            try:
+                size_x = int(args[-2])
+                size_y = int(args[-1])
+            except (ValueError, IndexError):
+                await self.bot.say("Wrong arguments")
+                return
+            final = BytesIO()
+            out = BytesIO()
+            img.save(out, 'png')
+            out.seek(0)
+            COMMAND = r"""convert - -liquid-rescale {0}x{1}\! img.png""".format(size_x,size_y)
+            proc = Popen(COMMAND, stdin=PIPE, shell=True)
+            proc.communicate(out.read())
+            await self.bot.upload('img.png')
+        except Exception as e:
+            await self.bot.say(embed=discord.Embed(title=self.err_title,description=str(e),colour=self.colourRed))
+
+    @commands.command(pass_context=True)
     async def rotate(self, ctx, *args):
         '''Rotate image.
         Usage: rotate @user|image angle

@@ -14,12 +14,14 @@ initial_extensions = [
     'dreams.basic',
     'dreams.imageprocessing',
     'dreams.nsfw',
-    'dreams.fun'
+    'dreams.fun',
+    'dreams.voice'
 ]
 
 description = "ReDream Discord Bot"
 bot = commands.Bot(command_prefix=load_settings()['prefix'], description=description)
 
+bot.remove_command("help")
 
 @bot.event
 async def on_ready():
