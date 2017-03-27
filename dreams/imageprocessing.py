@@ -466,15 +466,27 @@ class ImageProcessing:
         link = await get_img(self, ctx, 1, *args)
         try:
             text = ' '.join(args)
-            if len(ctx.message.mentions):
+            try:
+                response = requests.get(args[0])
                 text = text.split(' ', 1)[1]
+            except (IndexError, requests.exceptions.RequestException):
+                if len(ctx.message.mentions):
+                    text = text.split(' ', 1)[1]
+                elif discord.utils.find(lambda r: r.display_name.lower().startswith(str(args[0]).lower()), list(ctx.message.server.members)):
+                    text = text.split(' ', 1)[1]
+            
             if '|' in text:
                 split = text.split('|')
+                top = split[0]
+                bottom = split[1]
+            elif ',' in text:
+                split = text.split(',')
                 top = split[0]
                 bottom = split[1]
             else:
                 top = text
                 bottom = ""
+            
             link = requests.get(
                 "http://memegen.link/custom/{0}/{1}.jpg?alt={2}".format(top, bottom, link))
             img = Image.open(BytesIO(link.content)).convert("RGBA")
