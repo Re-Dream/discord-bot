@@ -10,6 +10,7 @@ from io import BytesIO
 
 from utils import checks
 from utils.config import load_settings
+from utils.config import load_redis
 
 class Fun:
 
@@ -138,16 +139,26 @@ class Fun:
         '''Check the drama level.
         Usage: drama
         '''
-        with open('drama.json') as drama:
-            d = json.load(drama)
-            print(d["keywords"])
-
+        keywords = load_redis().lrange("drama",0,-1)
+        list = [x.decode('utf-8') for x in keywords]
+        print(list)
         drama_count = 0
         async for msg in self.bot.logs_from(ctx.message.channel, before=ctx.message, limit=500):
-            if any(key in msg.content for key in d["keywords"]):
+            if any(key in msg.content.lower() for key in list):
                 drama_count += 1
         print(drama_count)
         await self.bot.say("Drama factor in *{0}*: **{1}%**".format(ctx.message.channel, int(drama_count)*100/500))
+
+    @commands.command(pass_context=True)
+    async def youtube(self, ctx, *search_query):
+        '''Check the drama level.
+        Usage: drama
+        '''
+        search_query = ' '.join(search_query)
+        request = requests.get("http://www.youtube.com/results?search_query=" + search_query).text
+        search_results = re.findall(r'href=\"\/watch\?v=(.{11})', request)
+        #print("http://www.youtube.com/watch?v=" + search_results[0])
+        await self.bot.say("http://www.youtube.com/watch?v=" + search_results[0])
 
 def setup(bot):
     bot.add_cog(Fun(bot))

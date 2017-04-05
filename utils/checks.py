@@ -9,7 +9,7 @@ class noPerms(commands.CommandError): pass
 class noRole(commands.CommandError): pass
 class noAdmin(commands.CommandError): pass
 
-owner_id = load_settings()['owner_id']
+owner_id = os.environ.get('BOT_OWNER')
 
 def is_owner_check(message):
 	if message.author.id == owner_id:

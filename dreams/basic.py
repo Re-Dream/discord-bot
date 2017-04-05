@@ -2,6 +2,8 @@ import asyncio
 import json
 import os
 import sys
+import random
+
 
 import discord
 from colour import Color
@@ -9,7 +11,7 @@ from discord.ext import commands
 
 from utils import checks
 from utils.config import load_settings
-
+from utils.config import load_redis
 
 class Basic:
 
@@ -27,8 +29,9 @@ class Basic:
         '''
         status = ' '.join(status)
         await self.bot.change_presence(game=discord.Game(name=status))
-        with open("status.txt", "a+") as f:
-            f.write(status +"\n")
+        load_redis().rpush("status",status)
+        print(load_redis().lrange("status",0,-1))
+        print(random.choice(load_redis().lrange("status",0,-1)))
         em = discord.Embed(description='Changing status to: {}'.format(status), colour=0x66FF66)
         await self.bot.say(embed=em)
 
@@ -37,9 +40,7 @@ class Basic:
         '''Change bot status.
         Usage: status "text here"
         '''
-        
         await self.bot.send_message(ctx.message.author,embed=discord.Embed(title="Basic Commands:",description='''```
-prf       Change bot prefix.
 colour    Change your colour.
 status    Change bot status.```'''))
         await self.bot.send_message(ctx.message.author,embed=discord.Embed(title="Fun Commands:",description='''```
@@ -98,7 +99,7 @@ gelbooru  Get random gelbooru image with given tags.```'''))
         Usage: colour hex_value
         '''
         try:
-            bot_channel = discord.utils.find(lambda r: r.name.startswith(self.bot_channel), list(ctx.message.server.channels))
+            bot_channel = self.bot.get_channel(load_redis().hget(ctx.message.server.id, "botchannel").decode('utf-8'))
             r = colour.r/255
             g = colour.g/255
             b = colour.b/255
@@ -127,21 +128,6 @@ gelbooru  Get random gelbooru image with given tags.```'''))
                 await self.bot.send_message(bot_channel, embed=em) 
         except Exception as e:
             await self.bot.say(embed=discord.Embed(title=self.err_title, description=str(e), colour=self.colourRed))
-
-    @commands.command()
-    @checks.admin_or_perm(manage_server=True)
-    async def prf(self, p):
-        '''Change bot prefix.
-        Usage: prf new_prefix
-        '''
-        new_prefix = load_settings()
-        new_prefix['prefix'] = p
-        self.command_prefix = p
-        with open('settings.json', 'w') as f:
-            f.write(json.dumps(new_prefix))
-        em = discord.Embed(description='Changing prefix to: {}'.format(p), colour=0x66FF66)
-        await self.bot.say(embed=em)
-        os.execl(sys.executable, sys.executable, * sys.argv)
 
 def setup(bot):
     bot.add_cog(Basic(bot))
